@@ -1,6 +1,13 @@
 #Ezra Felton CIS 261 Week 7 Project Phase 3
 
+#######################################################################################################
 # write the line of code to import the datetime library (Hint: look at week 1 labs)
+
+from datetime import datetime #Need cleirficaiton on how to complete this not sure if loop is needed. 
+import locale   #zy books, week 1 1.5 standard library
+
+########################################################################################################
+
 
 def GetEmpName():
     empname = input("Enter employee name: ")
@@ -30,15 +37,21 @@ def printinfo(DetailsPrinted):
     TotGrossPay = 0.00
     TotTax = 0.00
     TotNetPay = 0.00
-###################################################################
+
+##########################################################################################################
     # write the line of code to open Employees.txt file in read mode and assign to EmpFile
+
+    #  Zbook 6.1    example: f = open('myfile.txt', 'r')  read a flie
+    EmpFile = open("Employees.txt","r")  #empfile = object contains information in file. 
+
+##########################################################################################################
 
     while True:
         rundate = input ("Enter start date for report (MM/DD/YYYY) or All for all data in file: ")
         if (rundate.upper() == "ALL"):
             break
         try:
-            rundate = datetime.strptime(rundate, "%m/%d/%Y")
+            rundate = datetime.strptime(rundate, "%m/%d/%Y")  #compairing to from date (Data Validaiton)
             break
         except ValueError:
             print("Invalid date format. Try again.")
@@ -46,19 +59,26 @@ def printinfo(DetailsPrinted):
             continue  # skip next if statement and re-start loop
     while True:
         # write the line of code to read a record from EmpFile and assign it to EmpDetail
+        EmpDetail = EmpFile.readline() #Method must have open and close () EmpFile is object we created
 
         if not EmpDetail:
             break
         #write the line of code to remove the carriage return from the end of the record read from the file
-
+        EmpDetail = EmpDetail.replace("/n", "") #in assigment goes right first. then replace with blank.n, ""
+        #zybooke week 6 how to remove carrige
         #write the line of code to split the record read in on the pipe delimiter and assign it to EmpList
 
+        EmpList = EmpDetail.split("|") #Study this more (this is for entry in tex file. 
+        #No refereces on how to complete this step zy books week 1
+
         fromdate = EmpList[0]
-        if (str(rundate).upper() != "ALL"):
-            checkdate = datetime.strptime(fromdate, "%m/%d/%Y")
+        if (str(rundate).upper() != "ALL"): #determins how many date we print. 
+            checkdate = datetime.strptime(fromdate, "%m/%d/%Y")  #this is dateime import
             if (checkdate < rundate):
                 continue        
-######################################################################
+
+############################################################################################################
+
         todate = EmpList[1]
         empname = EmpList[2]
         hours = float(EmpList[3])
@@ -88,13 +108,11 @@ def PrintTotals(EmpTotals):
     print(f'Total Gross Pay: {EmpTotals["TotGrossPay"]:,.2f}')
     print(f'Total Income Tax:  {EmpTotals["TotTax"]:,.2f}')
     print(f'Total Net Pay: {EmpTotals["TotNetPay"]:,.2f}')
+ 
 
-
-   
-
-if __name__ == "__main__":
+if __name__ == "__main__": #No references in previous lesson on how to complete 
     # write the line of code to open a file Employees.txt in append mode and assign it to EmpFile
-
+    EmpFile = open("Employees.txt", "a") #week6 lab 2
     #EmpDetailList = []
     EmpTotals = {}
     DetailsPrinted = False
@@ -106,17 +124,19 @@ if __name__ == "__main__":
         hours = GetHoursWorked()
         hourlyrate = GetHourlyRate()
         taxrate = GetTaxRate()
-        ##############################################################
-        # write the line of code that will concatenate fromdate, todate, empname, hours, hourlyrate, and taxrate. Pipe delimit each value and add a carriage return to the end of the line
+
+ #############################################################################################################
+
+
+ #    # write the line of code that will concatenate fromdate, todate, empname, hours, hourlyrate, and taxrate. Pipe delimit each value and add a carriage return to the end of the line
         # and assign the line to EmpDetail
- 
+        EmpDetail = fromdate+"|"+todate+"|"+empname+"|"+str(hours)+"|"+str(hourlyrate)+"|"+str(taxrate)+"\n"
+        #contantoantion creates the string (explicit conversation str(hourlyrate)
         # write the liie of code that will write EmpDetail to EmpFile
+        EmpFile.write(EmpDetail) #write datat to file
+
     
     # write the line of code to close EmpFile
-
+    EmpFile.close()
     printinfo(DetailsPrinted)
-
-
-
-####################################################################
 
